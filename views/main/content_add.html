@@ -1,0 +1,61 @@
+﻿{% extends 'lay.html' %}
+
+{% block main %}
+
+<ol class="breadcrumb">
+    <li><a href="/">管理首页</a></li>
+    <li><span>内容添加</span></li>
+</ol>
+
+<h3>管理首页</h3>
+
+
+    <div class="form-group">
+        <label for="title">分类：</label>
+        <select name="category" id="category" class="form-control">
+            {%for category in categories%}
+            <option value="{{category.id}}">{{category.name}}</option>
+            {%endfor%}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="title">标题：</label>
+        <input type="text" class="form-control" id="title" placeholder="请输入内容标题" name="title">
+    </div>
+
+    <div class="form-group">
+        <label for="description">简介：</label>
+        <textarea name="description" id="description" class="form-control" rows="5" placeholder="请输入内容简介"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="content">内容：</label>
+        <textarea name="content" id="content" class="form-control" rows="10" placeholder="请输入内容"></textarea>
+    </div>
+
+    <button class="btn btn-default">提交</button>
+    <script>
+    window.onload = function(){
+        $(".btn").click(()=>{
+             $.ajax({
+                url:"/doAdd",
+                type:"POST",
+                data:{
+                    category: $("#category").val(),
+                    title: $("#title").val(),
+                    description: $("#description").val(),
+                    content: $("#content").val()
+                },
+                success:(info)=>{
+                    if(info.result==1){
+                        window.location.href = "/";
+                    }else{
+                        window.location.href = "/content_error";
+                    }
+                }
+            })
+        })
+    }   
+</script>
+{% endblock %}
